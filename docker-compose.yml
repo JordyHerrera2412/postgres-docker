@@ -1,23 +1,33 @@
+version: '3.1'
 services:
-  postgres_db:
-    image: postgres:16
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb_compose
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    env_file:
-      - .env
-    container_name: pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - mariadb_network
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_compose
     ports:
       - "8080:80"
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_USER=${MYSQL_USER}
+      - PMA_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      - mariadb_network
 volumes:
-  postgres_data:
+  mariadb_data:
+
+networks:
+  mariadb_network:
+>>>>>>> 3472aa0 (Primer commit en la rama main)
