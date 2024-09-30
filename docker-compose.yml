@@ -12,8 +12,6 @@ services:
       - "3306:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
-    networks:
-      - mariadb_network
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin_compose
@@ -30,4 +28,3 @@ volumes:
 
 networks:
   mariadb_network:
->>>>>>> 3472aa0 (Primer commit en la rama main)
